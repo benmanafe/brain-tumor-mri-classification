@@ -320,20 +320,3 @@ def plot_confusion_matrix(model, dataloader, class_names, device):
     plt.ylabel("True Label")
     plt.title(f"Confusion Matrix ({model.__class__.__name__})")
     plt.show()
-
-def main():
-    custom_pipeline = transforms.Compose([
-        transforms.RandomHorizontalFlip(p=0.5),
-        transforms.RandomRotation(10),
-        transforms.RandomApply([transforms.ElasticTransform(alpha=50.0)], p=0.5),
-    ])
-
-    create_augmented_img('Training/no_tumor', 'Training_augmented/no_tumor', target_count=820, augmentation_pipeline=custom_pipeline, use_torchvision=True)
-    # copy_img('Training/glioma_tumor', 'Training_augmented/glioma_tumor')
-    # copy_img('Training/meningioma_tumor', 'Training_augmented/meningioma_tumor')
-    # copy_img('Training/pituitary_tumor', 'Training_augmented/pituitary_tumor')
-    
-    see_dir('Training_augmented')
-    
-if __name__ == '__main__':
-    main()
