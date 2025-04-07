@@ -257,9 +257,24 @@ def test_model(model: nn.Module,
     
     return test_loss, test_accuracy, test_precision, test_recall, test_f1score
 
-def test_demo(model, dataloader, class_names, device, num_samples=9):
+def test_demo(model: nn.Module, 
+              dataloader: DataLoader, 
+              class_names: list, 
+              device: torch.device = 'cpu', 
+              num_samples: int = 9):
+    """
+    Visualizes predictions of a given model on a few random samples from a dataloader.
+
+    Args:
+        model (torch.nn.Module): The trained PyTorch model.
+        dataloader (torch.utils.data.DataLoader): The DataLoader containing the test data.
+        class_names (list): A list of class names corresponding to the model's output classes.
+        device (torch.device): The device (CPU or GPU) where the model and data are located. Defaults to 'cpu'.
+        num_samples (int, optional): The number of samples to visualize. Defaults to 9.
+    """
+    
     model.eval()
-    fig, axs = plt.subplots(3, 3, figsize=(10, 10))  # Display up to 9 images
+    fig, axs = plt.subplots(3, 3, figsize=(10, 10)) 
     axs = axs.ravel()
 
     with torch.no_grad():
@@ -300,7 +315,20 @@ def test_demo(model, dataloader, class_names, device, num_samples=9):
     plt.show()
 
 
-def plot_confusion_matrix(model, dataloader, class_names, device):
+def plot_confusion_matrix(model: nn.Module, 
+                          dataloader: DataLoader, 
+                          class_names: list, 
+                          device: torch.device = 'cpu'):
+    """
+    Generates and displays a confusion matrix for the predictions of a given model on a dataloader.
+
+    Args:
+        model (torch.nn.Module): The trained PyTorch model.
+        dataloader (torch.utils.data.DataLoader): The DataLoader containing the test data.
+        class_names (list): A list of class names corresponding to the model's output classes.
+        device (torch.device): The device (CPU or GPU) where the model and data are located. Defaults to 'cpu'.
+    """
+    
     model.eval()
     y_true, y_pred = [], []
     
@@ -316,7 +344,7 @@ def plot_confusion_matrix(model, dataloader, class_names, device):
     cm = confusion_matrix(y_true, y_pred)
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=class_names, yticklabels=class_names)
-    plt.xlabel("Predicted Label")
-    plt.ylabel("True Label")
-    plt.title(f"Confusion Matrix ({model.__class__.__name__})")
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title(f'Confusion Matrix ({model.__class__.__name__})')
     plt.show()
